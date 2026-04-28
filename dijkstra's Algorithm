@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void dijkstra(int A[10][10], int n, int source, int distance[10])
+{
+    int i, j, visited[10], min, v, count = 1;
+    for(i=1;i<=n;i++)
+    {
+        visited[i] = 0;
+        distance[i] = A[source][i];
+    }
+    visited[source] = 1;
+    distance[source] = 0;
+    while(count <= n)
+    {
+        min=999;
+        for(i=1;i<=n;i++)
+            if(distance[i] < min && visited[i] == 0)
+            {
+                min=distance[i];
+                v=i;
+            }
+            visited[v] = 1;
+            count ++;
+            for(i=1;i<=n;i++)
+                if(distance[i] > distance[v]+A[v][i])
+                    distance[i] = distance[v]+A[v][i];
+    }
+}
+
+int main()
+{
+    int n, i, j, A[10][10], source, distance[10];
+    printf("\n Read number of Vertices : ");
+    scanf("%d",&n);
+    printf("\n Read the cost matrix : \n ");
+    for(i=1;i<=n;i++)
+    {
+        for(j=1;j<=n;j++)
+        {
+            scanf("%d",&A[i][j]);
+            if(A[i][j] == 0)
+                A[i][j] = 999;
+        }
+    }
+    printf("\n Read source vertex : ");
+    scanf("%d",&source);
+    dijkstra(A,n,source,distance);
+    for(i=1;i<=n;i++)
+    {
+        if(source != i)
+            printf("\n Shortest path from %d to %d = %d",source,i,distance[i]);
+    }
+    return 0;
+}
